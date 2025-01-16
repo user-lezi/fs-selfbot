@@ -1,0 +1,35 @@
+{
+  "name": "fs-selfbot",
+  "version": "1.0.0",
+  "description": "get info from discord using user tokens! (against tos btw, for educational purpose btw)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "bot": "node dist/__test__/index.js",
+    "build": "prettier src -w && tsc",
+    "test": "npm run build && npm run bot",
+    "docs": "tsc && typedoc src/index.ts && node dist/docgen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/user-lezi/fs-selfbot.git"
+  },
+  "keywords": [
+    "fs-selfbot",
+    "forgescript"
+  ],
+  "author": "lezii",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/user-lezi/fs-selfbot/issues"
+  },
+  "homepage": "https://github.com/user-lezi/fs-selfbot#readme",
+  "devDependencies": {
+    "@tryforge/forgescript": "^2.1.0",
+    "@types/node": "^22.10.5",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.4.2",
+    "typedoc": "^0.27.6",
+    "typescript": "^5.7.2"
+  }
+}
