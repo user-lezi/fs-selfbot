@@ -8,10 +8,10 @@ export default new NativeFunction({
   description: "Returns the user nitro type.",
   output: ArgType.String,
   unwrap: true,
-  brackets: true,
-  args: [Arg.requiredUser("user", "The user to get info of.")],
+  brackets: false,
+  args: [Arg.optionalUser("user", "The user to get info of.")],
   async execute(ctx, [user]) {
-    let id = user.id;
+    let id = user?.id ?? ctx.user!.id;
     try {
       let json = await ctx.client.selfBotManager.requester.getUserProfileInfo({
         id,

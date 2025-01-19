@@ -8,10 +8,10 @@ exports.default = new forgescript_1.NativeFunction({
     description: "Returns the user's bio.",
     output: forgescript_1.ArgType.String,
     unwrap: true,
-    brackets: true,
-    args: [forgescript_1.Arg.requiredUser("user", "The user to get info of.")],
+    brackets: false,
+    args: [forgescript_1.Arg.optionalUser("user", "The user to get info of.")],
     async execute(ctx, [user]) {
-        let id = user.id;
+        let id = user?.id ?? ctx.user.id;
         try {
             let json = await ctx.client.selfBotManager.requester.getUserProfileInfo({
                 id,

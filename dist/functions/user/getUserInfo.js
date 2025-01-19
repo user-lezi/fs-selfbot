@@ -7,14 +7,14 @@ exports.default = new forgescript_1.NativeFunction({
     description: "Returns the user info.",
     output: forgescript_1.ArgType.String,
     unwrap: true,
-    brackets: true,
+    brackets: false,
     args: [
-        forgescript_1.Arg.requiredUser("user", "The user to get info of."),
+        forgescript_1.Arg.optionalUser("user", "The user to get info of."),
         forgescript_1.Arg.optionalBoolean("force", "Force to fetch new info rather than using from cache"),
         forgescript_1.Arg.optionalString("env", "The env variable name to load info to."),
     ],
     async execute(ctx, [user, force, env]) {
-        let id = user.id;
+        let id = user?.id ?? ctx.user.id;
         try {
             let json = await ctx.client.selfBotManager.requester.getUserInfo({
                 id,
