@@ -27,6 +27,15 @@ class Requester {
     constructor(manager) {
         this.manager = manager;
     }
+    clearCache(data = "all") {
+        if (data == "all") {
+            Object.keys(this.cache).forEach((key) => this.cache[key].clear());
+        }
+        else {
+            this.cache[data].clear();
+        }
+        return this;
+    }
     #_getUserInfo(id = "@me", token) {
         return this.base
             .GET(token ?? this.manager.randomToken(), `/users/${id}`)

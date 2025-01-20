@@ -19,6 +19,15 @@ export interface IFSSelfbotOptions {
 }
 
 /**
+ * Enum representing cache types for the Requester.
+ */
+export enum RequesterCacheType {
+  All = "all",
+  UserInfo = "userInfo",
+  UserProfileInfo = "userProfileInfo",
+}
+
+/**
  * Represents detailed information about a Discord user.
  */
 export interface IUserInfo {

@@ -3,6 +3,11 @@ export interface IFSSelfbotOptions {
     userTokens: string[];
     cacheDuration: number;
 }
+export declare enum RequesterCacheType {
+    All = "all",
+    UserInfo = "userInfo",
+    UserProfileInfo = "userProfileInfo"
+}
 export interface IUserInfo {
     id: string;
     username: string;

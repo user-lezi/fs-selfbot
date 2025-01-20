@@ -21,6 +21,7 @@ export declare class Requester {
         userProfileInfo: Map<string, ICacheData<IUserProfileInfo>>;
     };
     constructor(manager: Manager);
+    clearCache(data?: keyof Requester["cache"] | "all"): this;
     getUserInfo(opts?: {
         id?: string;
     } & IBaseFetchOptions): Promise<IUserInfo | null>;

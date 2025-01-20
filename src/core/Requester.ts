@@ -73,6 +73,23 @@ export class Requester {
   public constructor(public manager: Manager) {}
 
   /**
+   * Clears the cache for the specified data type or all cached data.
+   * @param data - The type of data to clear from the cache (e.g., "userInfo" or "userProfileInfo"). Defaults to "all".
+   * If "all" is specified, all cache entries are cleared.
+   * @returns The current instance of the Requester for method chaining.
+   */
+  public clearCache(data: keyof Requester["cache"] | "all" = "all") {
+    if (data == "all") {
+      Object.keys(this.cache).forEach((key) =>
+        this.cache[key as keyof Requester["cache"]].clear(),
+      );
+    } else {
+      this.cache[data].clear();
+    }
+    return this;
+  }
+
+  /**
    * Internal method to fetch user info from the API.
    * @param id - User ID to fetch info for. Defaults to "@me".
    * @param token - Token to use for the request. Defaults to a random token.
