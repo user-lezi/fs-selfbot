@@ -1,6 +1,6 @@
 {
   "name": "fs-selfbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "get info from discord using user tokens! (against tos btw, for educational purpose btw)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
