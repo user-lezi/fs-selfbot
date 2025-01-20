@@ -1,0 +1,8 @@
+node_modules
+\.env
+src/
+docs/
+metadata/
+tsconfig.json
+\.github/
+*/**/__test__
