@@ -6,9 +6,12 @@ export declare class FSSelfbot extends ForgeExtension {
     description: string;
     version: string;
     readonly options: Omit<IFSSelfbotOptions, "userTokens">;
+    readonly tokenNames: Map<string, number>;
     manager: Manager;
     constructor(opts?: Partial<IFSSelfbotOptions>);
     init(client: ForgeClient): Promise<void>;
+    getTokenFromName(name: string): string | null;
+    getNameFromToken(token: string): string | null;
 }
 export * from "./typings";
 export * from "./core";

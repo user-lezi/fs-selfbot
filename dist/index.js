@@ -22,14 +22,24 @@ class FSSelfbot extends forgescript_1.ForgeExtension {
     description = require("../package.json").description;
     version = require("../package.json").version;
     options;
+    tokenNames = new Map();
     manager = new Manager_1.Manager();
     constructor(opts = {}) {
         super();
         if (!opts.userTokens)
             throw new Error(`No user tokens are provided.`);
-        if (!(Array.isArray(opts.userTokens) &&
-            opts.userTokens.every((x) => typeof x == "string")))
-            throw new TypeError(`Expected userTokens value to be array of user tokens (string). Got ${typeof opts.userTokens}`);
+        if (typeof opts.userTokens !== "object" || Array.isArray(opts.userTokens)) {
+            throw new TypeError(`Expected userTokens to be a non-array object. Got ${typeof opts.userTokens}`);
+        }
+        for (const [key, token] of Object.entries(opts.userTokens)) {
+            if (typeof key !== "string" ||
+                typeof token !== "string" ||
+                !token.trim()) {
+                throw new Error(`Invalid token entry: key and value must be non-empty strings. Got key: ${key}, value: ${token}`);
+            }
+            this.tokenNames.set(key, this.tokenNames.size);
+            this.manager.addUserToken(token);
+        }
         if (!opts.cacheDuration) {
             opts.cacheDuration = 10 * 60 * 1000;
         }
@@ -44,7 +54,6 @@ class FSSelfbot extends forgescript_1.ForgeExtension {
             cacheDuration: opts.cacheDuration,
         };
         this.manager.cacheDuration = opts.cacheDuration;
-        opts.userTokens.forEach((token) => this.manager.addUserToken(token));
     }
     async init(client) {
         client.selfBotManager = this.manager;
@@ -56,18 +65,30 @@ class FSSelfbot extends forgescript_1.ForgeExtension {
             let args = [message];
             if (valid) {
                 let info = await this.manager.getTokenInfo(token);
-                args.push(`\n\tUsername: ${info.username} | Email: ${info.email ? "Verified" : "Not verified"} | Phone: ${info.phone ? "Verified" : "Not verified"}`);
+                args.push(`\n\tName: ${this.getNameFromToken(token)}`, `\n\tUsername: ${info.username} | Email: ${info.email ? "Verified" : "Not verified"} | Phone: ${info.phone ? "Verified" : "Not verified"}`);
             }
             else
                 err = token;
             forgescript_1.Logger[valid ? "info" : "warn"](...args);
         }
         if (err)
-            throw new Error(`Found invalid token [${err}]\n` +
+            throw new Error(`Found invalid token [${this.getNameFromToken(err)}: ${err}]\n` +
                 (await this.manager
                     .getTokenInfo(err)
                     .then(() => ":p")
                     .catch((e) => e.message)));
+    }
+    getTokenFromName(name) {
+        let index = this.tokenNames.get(name) ?? -1;
+        if (index < 0 || index >= this.tokenNames.size)
+            return null;
+        return this.manager.userTokens[index];
+    }
+    getNameFromToken(token) {
+        let index = this.manager.userTokens.indexOf(token);
+        if (index < 0 || index >= this.tokenNames.size)
+            return null;
+        return Array.from(this.tokenNames.keys())[index];
     }
 }
 exports.FSSelfbot = FSSelfbot;

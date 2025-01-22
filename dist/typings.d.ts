@@ -1,6 +1,6 @@
 export declare const BaseApiURL = "https://discord.com/api/v10";
 export interface IFSSelfbotOptions {
-    userTokens: string[];
+    userTokens: Record<string, string>;
     cacheDuration: number;
 }
 export declare enum RequesterCacheType {
@@ -75,5 +75,15 @@ export interface IUserConnectedAccount {
     show_activity?: boolean;
     two_way_link?: boolean;
     visibility?: 0 | 1;
+}
+export interface ITokenInfo extends IUserInfo {
+    mfa_enabled: boolean;
+    locale: string;
+    premium_type: UserPremiumType;
+    email: string | null;
+    verified: boolean;
+    phone: string | null;
+    nsfw_allowed: boolean;
+    bio: string;
 }
 //# sourceMappingURL=typings.d.ts.map

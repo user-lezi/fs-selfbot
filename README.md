@@ -34,7 +34,11 @@ const client = new ForgeClient({
     prefixes: ["!", "<@$botID>"],
     extensions: [
         new FSSelfbot({
-          userTokens: ["user token", ...], // An array of user tokens
+          userTokens: { 
+            user1: "User token",
+            user2: "User Token",
+            ... 
+          }, // An object of user tokens
           cacheDuration: 600000 // Cache lifespan in ms
         })
     ],
@@ -48,7 +52,7 @@ client.login("bot token");
 ### FSSelfbot Configuration
 | Option         | Type     | Description                              |
 |----------------|----------|------------------------------------------|
-| `userTokens`   | `Array`  | List of user tokens to authenticate.    |
+| `userTokens`   | `Object` | An object of user tokens.               |
 | `cacheDuration`| `Number` | Cache lifespan in milliseconds.         |
 
 ---

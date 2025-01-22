@@ -1,3 +1,4 @@
+import { ITokenInfo } from "../typings";
 import { Requester } from "./Requester";
 export declare class Manager {
     #private;
@@ -8,7 +9,7 @@ export declare class Manager {
     addUserToken(token: string): this;
     validate(): Promise<[boolean, string, string][]>;
     validateToken(token: string): Promise<boolean>;
-    getTokenInfo(token: string): Promise<any>;
+    getTokenInfo(token: string): Promise<ITokenInfo>;
     randomToken(): string;
 }
 //# sourceMappingURL=Manager.d.ts.map

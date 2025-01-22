@@ -1,3 +1,4 @@
+import { ITokenInfo } from "../typings";
 import { Requester } from "./Requester";
 
 /**
@@ -83,7 +84,7 @@ export class Manager {
     let res = await this.requester.base.GET(token, `/users/@me`);
     if (!res.ok) throw new Error("Fetch failed");
     let json = await res.json();
-    return json;
+    return json as ITokenInfo;
   }
 
   /**

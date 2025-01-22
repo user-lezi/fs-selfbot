@@ -18,6 +18,9 @@ export class FSSelfbot extends ForgeExtension {
   /** Options for the selfbot, excluding user tokens. */
   public readonly options: Omit<IFSSelfbotOptions, "userTokens">;
 
+  /** Custom Token names mapped to its token index. */
+  public readonly tokenNames = new Map<string, number>();
+
   /** Manager instance for handling selfbot operations. */
   public manager = new Manager();
 
@@ -31,15 +34,25 @@ export class FSSelfbot extends ForgeExtension {
 
     if (!opts.userTokens) throw new Error(`No user tokens are provided.`);
 
-    if (
-      !(
-        Array.isArray(opts.userTokens) &&
-        opts.userTokens.every((x) => typeof x == "string")
-      )
-    )
+    if (typeof opts.userTokens !== "object" || Array.isArray(opts.userTokens)) {
       throw new TypeError(
-        `Expected userTokens value to be array of user tokens (string). Got ${typeof opts.userTokens}`,
+        `Expected userTokens to be a non-array object. Got ${typeof opts.userTokens}`,
       );
+    }
+
+    for (const [key, token] of Object.entries(opts.userTokens)) {
+      if (
+        typeof key !== "string" ||
+        typeof token !== "string" ||
+        !token.trim()
+      ) {
+        throw new Error(
+          `Invalid token entry: key and value must be non-empty strings. Got key: ${key}, value: ${token}`,
+        );
+      }
+      this.tokenNames.set(key, this.tokenNames.size);
+      this.manager.addUserToken(token);
+    }
 
     if (!opts.cacheDuration) {
       opts.cacheDuration = 10 * 60 * 1000; // Default to 10 minutes.
@@ -61,7 +74,6 @@ export class FSSelfbot extends ForgeExtension {
     };
 
     this.manager.cacheDuration = opts.cacheDuration;
-    opts.userTokens.forEach((token) => this.manager.addUserToken(token));
   }
 
   /**
@@ -83,6 +95,7 @@ export class FSSelfbot extends ForgeExtension {
       if (valid) {
         let info = await this.manager.getTokenInfo(token);
         args.push(
+          `\n\tName: ${this.getNameFromToken(token)}`,
           `\n\tUsername: ${info.username} | Email: ${info.email ? "Verified" : "Not verified"} | Phone: ${info.phone ? "Verified" : "Not verified"}`,
         );
       } else err = token;
@@ -92,12 +105,33 @@ export class FSSelfbot extends ForgeExtension {
 
     if (err)
       throw new Error(
-        `Found invalid token [${err}]\n` +
+        `Found invalid token [${this.getNameFromToken(err)}: ${err}]\n` +
           (await this.manager
             .getTokenInfo(err)
             .then(() => ":p")
             .catch((e) => e.message)),
       );
+  }
+
+  /**
+   * Retrieves a user token associated with a given name.
+   * @param name - The name associated with the token.
+   * @returns The user token if found, or `null` if the name is invalid or out of range.
+   */
+  public getTokenFromName(name: string) {
+    let index = this.tokenNames.get(name) ?? -1;
+    if (index < 0 || index >= this.tokenNames.size) return null;
+    return this.manager.userTokens[index];
+  }
+  /**
+   * Retrieves the name associated with a given user token.
+   * @param token - The user token to find the name for.
+   * @returns The name if found, or `null` if the token is invalid or out of range.
+   */
+  public getNameFromToken(token: string) {
+    let index = this.manager.userTokens.indexOf(token);
+    if (index < 0 || index >= this.tokenNames.size) return null;
+    return Array.from(this.tokenNames.keys())[index];
   }
 }
 

@@ -10,7 +10,7 @@ export interface IFSSelfbotOptions {
   /**
    * An array of user tokens for authentication.
    */
-  userTokens: string[];
+  userTokens: Record<string, string>;
 
   /**
    * Duration (in milliseconds) for caching data.
@@ -232,4 +232,33 @@ export interface IUserConnectedAccount {
 
   /** Visibility status of the account (0 for private, 1 for public). */
   visibility?: 0 | 1;
+}
+
+/**
+ * Extended user information with additional token details.
+ */
+export interface ITokenInfo extends IUserInfo {
+  /** Whether multi-factor authentication is enabled. */
+  mfa_enabled: boolean;
+
+  /** Locale of the user. */
+  locale: string;
+
+  /** Premium type of the user. */
+  premium_type: UserPremiumType;
+
+  /** Email address of the user, or `null` if not set. */
+  email: string | null;
+
+  /** Whether the user's email is verified. */
+  verified: boolean;
+
+  /** Phone number of the user, or `null` if not set. */
+  phone: string | null;
+
+  /** Whether the user is allowed to view NSFW content. */
+  nsfw_allowed: boolean;
+
+  /** Biography of the user. */
+  bio: string;
 }
