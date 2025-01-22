@@ -47,10 +47,10 @@ export interface IUserInfo {
   discriminator: string;
 
   /** Public flags associated with the user. */
-  public_flags: number;
+  public_flags: UserFlags;
 
   /** Flags for the user. */
-  flags: number;
+  flags: UserFlags;
 
   /** Hash fr the user's banner. */
   banner: string | null;
@@ -242,7 +242,7 @@ export interface ITokenInfo extends IUserInfo {
   mfa_enabled: boolean;
 
   /** Locale of the user. */
-  locale: string;
+  locale: ILocales;
 
   /** Premium type of the user. */
   premium_type: UserPremiumType;
@@ -261,4 +261,91 @@ export interface ITokenInfo extends IUserInfo {
 
   /** Biography of the user. */
   bio: string;
+}
+
+/**
+ * Supported locales for users.
+ */
+export type ILocales =
+  | "id" // Indonesian
+  | "da" // Danish
+  | "de" // German
+  | "en-GB" // English, UK
+  | "en-US" // English, US
+  | "es-ES" // Spanish
+  | "es-419" // Spanish, LATAM
+  | "fr" // French
+  | "hr" // Croatian
+  | "it" // Italian
+  | "lt" // Lithuanian
+  | "hu" // Hungarian
+  | "nl" // Dutch
+  | "no" // Norwegian
+  | "pl" // Polish
+  | "pt-BR" // Portuguese, Brazilian
+  | "ro" // Romanian, Romania
+  | "fi" // Finnish
+  | "sv-SE" // Swedish
+  | "vi" // Vietnamese
+  | "tr" // Turkish
+  | "cs" // Czech
+  | "el" // Greek
+  | "bg" // Bulgarian
+  | "ru" // Russian
+  | "uk" // Ukrainian
+  | "hi" // Hindi
+  | "th" // Thai
+  | "zh-CN" // Chinese, China
+  | "ja" // Japanese
+  | "zh-TW" // Chinese, Taiwan
+  | "ko"; // Korean
+
+/**
+ * Enum representing various user flags and their corresponding bitwise values.
+ */
+export enum UserFlags {
+  /** Discord Employee */
+  Staff = 1 << 0,
+
+  /** Partnered Server Owner */
+  Partner = 1 << 1,
+
+  /** HypeSquad Events Member */
+  HypeSquad = 1 << 2,
+
+  /** Bug Hunter Level 1 */
+  BugHunterLevel1 = 1 << 3,
+
+  /** House Bravery Member */
+  HypeSquadOnlineHouse1 = 1 << 6,
+
+  /** House Brilliance Member */
+  HypeSquadOnlineHouse2 = 1 << 7,
+
+  /** House Balance Member */
+  HypeSquadOnlineHouse3 = 1 << 8,
+
+  /** Early Nitro Supporter */
+  PremiumEarlySupporter = 1 << 9,
+
+  /** User is a team */
+  TeamPseudoUser = 1 << 10,
+
+  /** Bug Hunter Level 2 */
+  BugHunterLevel2 = 1 << 14,
+
+  /** Verified Bot */
+  VerifiedBot = 1 << 16,
+
+  /** Early Verified Bot Developer */
+  VerifiedDeveloper = 1 << 17,
+
+  /** Moderator Programs Alumni */
+  CertifiedModerator = 1 << 18,
+
+  /** Bot uses only HTTP interactions and is shown in the online member list */
+  BotHttpInteractions = 1 << 19,
+
+  /** User is an Active Developer */
+  ActiveDeveloper = 1 << 22,
 }

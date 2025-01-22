@@ -14,8 +14,8 @@ export interface IUserInfo {
     bot?: boolean;
     avatar: string | null;
     discriminator: string;
-    public_flags: number;
-    flags: number;
+    public_flags: UserFlags;
+    flags: UserFlags;
     banner: string | null;
     accent_color: number;
     global_name: string;
@@ -78,12 +78,30 @@ export interface IUserConnectedAccount {
 }
 export interface ITokenInfo extends IUserInfo {
     mfa_enabled: boolean;
-    locale: string;
+    locale: ILocales;
     premium_type: UserPremiumType;
     email: string | null;
     verified: boolean;
     phone: string | null;
     nsfw_allowed: boolean;
     bio: string;
+}
+export type ILocales = "id" | "da" | "de" | "en-GB" | "en-US" | "es-ES" | "es-419" | "fr" | "hr" | "it" | "lt" | "hu" | "nl" | "no" | "pl" | "pt-BR" | "ro" | "fi" | "sv-SE" | "vi" | "tr" | "cs" | "el" | "bg" | "ru" | "uk" | "hi" | "th" | "zh-CN" | "ja" | "zh-TW" | "ko";
+export declare enum UserFlags {
+    Staff = 1,
+    Partner = 2,
+    HypeSquad = 4,
+    BugHunterLevel1 = 8,
+    HypeSquadOnlineHouse1 = 64,
+    HypeSquadOnlineHouse2 = 128,
+    HypeSquadOnlineHouse3 = 256,
+    PremiumEarlySupporter = 512,
+    TeamPseudoUser = 1024,
+    BugHunterLevel2 = 16384,
+    VerifiedBot = 65536,
+    VerifiedDeveloper = 131072,
+    CertifiedModerator = 262144,
+    BotHttpInteractions = 524288,
+    ActiveDeveloper = 4194304
 }
 //# sourceMappingURL=typings.d.ts.map
