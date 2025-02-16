@@ -1,8 +1,9 @@
-import { IUserInfo, IUserProfileInfo } from "../typings";
+import { IUserInfo, IUserMessagePayload, IUserMessageResponse, IUserProfileInfo } from "../typings";
 import { Manager } from "./Manager";
 export declare class BaseRequester {
     _makeRequest(url: string, token: string, options?: RequestInit): Promise<Response>;
     GET(token: string, endpoint: string): Promise<Response>;
+    POST(token: string, endpoint: string, body?: BodyInit): Promise<Response>;
 }
 export interface IBaseFetchOptions {
     force?: boolean;
@@ -28,5 +29,9 @@ export declare class Requester {
     getUserProfileInfo(opts?: {
         id?: string;
     } & IBaseFetchOptions): Promise<IUserProfileInfo | null>;
+    sendUserMessage(opts?: {
+        payload?: IUserMessagePayload;
+        channelId?: string;
+    } & IBaseFetchOptions): Promise<IUserMessageResponse | null>;
 }
 //# sourceMappingURL=Requester.d.ts.map

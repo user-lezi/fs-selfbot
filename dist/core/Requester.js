@@ -15,6 +15,12 @@ class BaseRequester {
     GET(token, endpoint) {
         return this._makeRequest(typings_1.BaseApiURL + endpoint, token, { method: "GET" });
     }
+    POST(token, endpoint, body) {
+        return this._makeRequest(typings_1.BaseApiURL + endpoint, token, {
+            method: "POST",
+            body: body ?? null,
+        });
+    }
 }
 exports.BaseRequester = BaseRequester;
 class Requester {
@@ -95,6 +101,18 @@ class Requester {
                 return await this.getUserProfileInfo({ id: opts.id, force: true });
         }
         return info;
+    }
+    #_sendUserMessage(channelId, payload, token) {
+        return this.base
+            .POST(token ?? this.manager.randomToken(), `/channels/${channelId}/messages`, JSON.stringify(payload))
+            .then((res) => res.ok ? res.json() : null);
+    }
+    async sendUserMessage(opts = {}) {
+        if (!opts.channelId)
+            throw Error(`No Channel ID is provided.`);
+        if (typeof opts.payload !== "object")
+            throw Error("No Payload is provided.");
+        return await this.#_sendUserMessage(opts.channelId, opts.payload, opts.token);
     }
 }
 exports.Requester = Requester;

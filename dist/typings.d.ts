@@ -104,4 +104,76 @@ export declare enum UserFlags {
     BotHttpInteractions = 524288,
     ActiveDeveloper = 4194304
 }
+export interface IUserMessagePayload {
+    content: string;
+}
+export declare enum MessageType {
+    Default = 0,
+    RecipientAdd = 1,
+    RecipientRemove = 2,
+    Call = 3,
+    ChannelNameChange = 4,
+    ChannelIconChange = 5,
+    ChannelPinnedMessage = 6,
+    UserJoin = 7,
+    GuildBoost = 8,
+    GuildBoostTier1 = 9,
+    GuildBoostTier2 = 10,
+    GuildBoostTier3 = 11,
+    ChannelFollowAdd = 12,
+    GuildDiscoveryDisqualified = 14,
+    GuildDiscoveryRequalified = 15,
+    GuildDiscoveryGracePeriodInitialWarning = 16,
+    GuildDiscoveryGracePeriodFinalWarning = 17,
+    ThreadCreated = 18,
+    Reply = 19,
+    ChatInputCommand = 20,
+    ThreadStarterMessage = 21,
+    GuildInviteReminder = 22,
+    ContextMenuCommand = 23,
+    AutoModerationAction = 24,
+    RoleSubscriptionPurchase = 25,
+    InteractionPremiumUpsell = 26,
+    StageStart = 27,
+    StageEnd = 28,
+    StageSpeaker = 29,
+    StageTopic = 31,
+    GuildApplicationPremiumSubscription = 32,
+    GuildIncidentAlertModeEnabled = 36,
+    GuildIncidentAlertModeDisabled = 37,
+    GuildIncidentReportRaid = 38,
+    GuildIncidentReportFalseAlarm = 39,
+    PurchaseNotification = 44,
+    PollResult = 46
+}
+export declare enum MessageFlag {
+    Normal = 0,
+    Crossposted = 1,
+    IsCrosspost = 2,
+    SuppressEmbeds = 4,
+    SourceMessageDeleted = 8,
+    Urgent = 16,
+    HasThread = 32,
+    Ephemeral = 64,
+    Loading = 128,
+    FailedToMentionSomeRolesInThread = 256,
+    SuppressNotifications = 4096,
+    IsVoiceMessage = 8192,
+    HasSnapshot = 16384
+}
+export interface IUserMessageResponse {
+    type: MessageType;
+    content: string;
+    timestamp: string;
+    edited_timestamp: string | null;
+    flags: MessageFlag;
+    id: string;
+    channel_id: string;
+    author: IUserInfo;
+    pinned: boolean;
+    mention_everyone: boolean;
+    tts: boolean;
+    mentions: IUserInfo[];
+    mention_roles: string[];
+}
 //# sourceMappingURL=typings.d.ts.map

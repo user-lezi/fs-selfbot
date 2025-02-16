@@ -1,4 +1,10 @@
-import { BaseApiURL, IUserInfo, IUserProfileInfo } from "../typings";
+import {
+  BaseApiURL,
+  IUserInfo,
+  IUserMessagePayload,
+  IUserMessageResponse,
+  IUserProfileInfo,
+} from "../typings";
 import { Manager } from "./Manager";
 
 /**
@@ -28,6 +34,19 @@ export class BaseRequester {
    */
   public GET(token: string, endpoint: string) {
     return this._makeRequest(BaseApiURL + endpoint, token, { method: "GET" });
+  }
+
+  /**
+   * Sends a POST request to the specified API endpoint.
+   * @param token - Authorization token for the request.
+   * @param endpoint - API endpoint to send the POST request to.
+   * @param body - The body for the request.
+   */
+  public POST(token: string, endpoint: string, body?: BodyInit) {
+    return this._makeRequest(BaseApiURL + endpoint, token, {
+      method: "POST",
+      body: body ?? null,
+    });
   }
 }
 
@@ -170,5 +189,47 @@ export class Requester {
       } else return await this.getUserProfileInfo({ id: opts.id, force: true });
     }
     return info;
+  }
+
+  /**
+   * Internal method to send an user message from the API.
+   * @param channelId - The channel ID to send message to.
+   * @param payload - The message payload
+   * @param token - Token to use for the request. Defaults to a random token.
+   */
+  #_sendUserMessage(
+    channelId: string,
+    payload: IUserMessagePayload,
+    token?: string,
+  ) {
+    return this.base
+      .POST(
+        token ?? this.manager.randomToken(),
+        `/channels/${channelId}/messages`,
+        JSON.stringify(payload),
+      )
+      .then((res) =>
+        res.ok ? (res.json() as unknown as IUserMessageResponse) : null,
+      );
+  }
+
+  /**
+   * Sends a message as an user from one of the saved tokens.
+   * @param opts - Options for sending the message.
+   */
+  public async sendUserMessage(
+    opts: {
+      payload?: IUserMessagePayload;
+      channelId?: string;
+    } & IBaseFetchOptions = {},
+  ): Promise<IUserMessageResponse | null> {
+    if (!opts.channelId) throw Error(`No Channel ID is provided.`);
+    if (typeof opts.payload !== "object")
+      throw Error("No Payload is provided.");
+    return await this.#_sendUserMessage(
+      opts.channelId,
+      opts.payload,
+      opts.token,
+    );
   }
 }
