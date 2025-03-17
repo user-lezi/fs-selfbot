@@ -232,4 +232,32 @@ export class Requester {
       opts.token,
     );
   }
+
+  /**
+   * Internal method to set typing indicator using the API.
+   * @param channelId - The channel ID to show the indicator in.
+   * @param token - Token to use for the request. Defaults to a random token.
+   */
+  #_setUserTyping(channelId: string, token?: string) {
+    return this.base
+      .POST(
+        token ?? this.manager.randomToken(),
+        `/channels/${channelId}/typing`,
+        JSON.stringify({}),
+      )
+      .then((res) => (res.ok ? res.status : null));
+  }
+
+  /**
+   * Sets typing indicator for an user from one of the saved tokens.
+   * @param opts - Options for indicataor.
+   */
+  public async setUserTyping(
+    opts: {
+      channelId?: string;
+    } & IBaseFetchOptions = {},
+  ): Promise<unknown | null> {
+    if (!opts.channelId) throw Error(`No Channel ID is provided.`);
+    return await this.#_setUserTyping(opts.channelId, opts.token);
+  }
 }

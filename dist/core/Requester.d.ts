@@ -33,5 +33,8 @@ export declare class Requester {
         payload?: IUserMessagePayload;
         channelId?: string;
     } & IBaseFetchOptions): Promise<IUserMessageResponse | null>;
+    setUserTyping(opts?: {
+        channelId?: string;
+    } & IBaseFetchOptions): Promise<unknown | null>;
 }
 //# sourceMappingURL=Requester.d.ts.map

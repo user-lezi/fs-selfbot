@@ -114,6 +114,16 @@ class Requester {
             throw Error("No Payload is provided.");
         return await this.#_sendUserMessage(opts.channelId, opts.payload, opts.token);
     }
+    #_setUserTyping(channelId, token) {
+        return this.base
+            .POST(token ?? this.manager.randomToken(), `/channels/${channelId}/typing`, JSON.stringify({}))
+            .then((res) => (res.ok ? res.status : null));
+    }
+    async setUserTyping(opts = {}) {
+        if (!opts.channelId)
+            throw Error(`No Channel ID is provided.`);
+        return await this.#_setUserTyping(opts.channelId, opts.token);
+    }
 }
 exports.Requester = Requester;
 //# sourceMappingURL=Requester.js.map
