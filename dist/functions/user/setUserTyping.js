@@ -10,7 +10,7 @@ exports.default = new forgescript_1.NativeFunction({
     brackets: true,
     args: [
         forgescript_1.Arg.requiredString("name", "The saved name for the token to get."),
-        forgescript_1.Arg.optionalChannel("channel ID", "The channel to send this message to"),
+        forgescript_1.Arg.optionalString("channel ID", "The channel to send this message to"),
     ],
     output: forgescript_1.ArgType.String,
     unwrap: true,
@@ -19,12 +19,12 @@ exports.default = new forgescript_1.NativeFunction({
         let token = extension.getTokenFromName(name);
         if (!token)
             return this.customError(`The token with name "${name}" not found.`);
-        channel ??= ctx.channel;
-        if (!channel || !channel.isTextBased())
-            return this.customError(`Invalid channel. (${!channel ? "couldnt find the channel" : "the channel isn't text based"})`);
+        channel ??= ctx.channel.id;
+        if (!channel)
+            return this.customError(`Invalid channel. (couldnt find the channel)`);
         try {
             let res = await ctx.client.selfBotManager.requester.setUserTyping({
-                channelId: channel.id,
+                channelId: channel,
                 token,
             });
             return this.success(res ?? 0);

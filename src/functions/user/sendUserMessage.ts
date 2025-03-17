@@ -9,7 +9,7 @@ export default new NativeFunction({
   args: [
     Arg.requiredString("name", "The saved name for the token to get."),
     Arg.requiredString("content", "The message content."),
-    Arg.optionalChannel("channel ID", "The channel to send this message to"),
+    Arg.optionalString("channel ID", "The channel to send this message to"),
     Arg.optionalBoolean("return ID", "Results the message id."),
     Arg.optionalString("env", "The env variable name to load output to."),
   ],
@@ -20,15 +20,13 @@ export default new NativeFunction({
     let token = extension.getTokenFromName(name);
     if (!token)
       return this.customError(`The token with name "${name}" not found.`);
-    channel ??= ctx.channel;
-    if (!channel || !channel.isTextBased())
-      return this.customError(
-        `Invalid channel. (${!channel ? "couldnt find the channel" : "the channel isn't text based"})`,
-      );
+    channel ??= ctx.channel!.id;
+    if (!channel)
+      return this.customError(`Invalid channel. (couldnt find the channel)`);
 
     try {
       let message = await ctx.client.selfBotManager.requester.sendUserMessage({
-        channelId: channel.id,
+        channelId: channel,
         token,
         payload: {
           content,
