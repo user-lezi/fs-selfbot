@@ -124,6 +124,18 @@ class Requester {
             throw Error(`No Channel ID is provided.`);
         return await this.#_setUserTyping(opts.channelId, opts.token);
     }
+    #_createDM(recipient, token) {
+        return this.base
+            .POST(token ?? this.manager.randomToken(), `/users/@me/channels`, JSON.stringify({
+            recipient_id: recipient,
+        }))
+            .then((res) => (res.ok ? res.json() : null));
+    }
+    async createDM(opts = {}) {
+        if (!opts.recipient)
+            throw Error(`No Recipient is provided.`);
+        return await this.#_createDM(opts.recipient, opts.token);
+    }
 }
 exports.Requester = Requester;
 //# sourceMappingURL=Requester.js.map

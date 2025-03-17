@@ -1,5 +1,6 @@
 import {
   BaseApiURL,
+  IDMChannel,
   IUserInfo,
   IUserMessagePayload,
   IUserMessageResponse,
@@ -259,5 +260,35 @@ export class Requester {
   ): Promise<unknown | null> {
     if (!opts.channelId) throw Error(`No Channel ID is provided.`);
     return await this.#_setUserTyping(opts.channelId, opts.token);
+  }
+
+  /**
+   * Internal method to create DM channel with a user using the API.
+   * @param recipient - The recipient to open a DM channel with.
+   * @param token - Token to use for the request. Defaults to a random token.
+   */
+  #_createDM(recipient: string, token?: string) {
+    return this.base
+      .POST(
+        token ?? this.manager.randomToken(),
+        `/users/@me/channels`,
+        JSON.stringify({
+          recipient_id: recipient,
+        }),
+      )
+      .then((res) => (res.ok ? (res.json() as unknown as IDMChannel) : null));
+  }
+
+  /**
+   * Create DM channel with a user using the API.
+   * @param opts
+   */
+  public async createDM(
+    opts: {
+      recipient?: string;
+    } & IBaseFetchOptions = {},
+  ): Promise<IDMChannel | null> {
+    if (!opts.recipient) throw Error(`No Recipient is provided.`);
+    return await this.#_createDM(opts.recipient, opts.token);
   }
 }

@@ -1,4 +1,4 @@
-import { IUserInfo, IUserMessagePayload, IUserMessageResponse, IUserProfileInfo } from "../typings";
+import { IDMChannel, IUserInfo, IUserMessagePayload, IUserMessageResponse, IUserProfileInfo } from "../typings";
 import { Manager } from "./Manager";
 export declare class BaseRequester {
     _makeRequest(url: string, token: string, options?: RequestInit): Promise<Response>;
@@ -36,5 +36,8 @@ export declare class Requester {
     setUserTyping(opts?: {
         channelId?: string;
     } & IBaseFetchOptions): Promise<unknown | null>;
+    createDM(opts?: {
+        recipient?: string;
+    } & IBaseFetchOptions): Promise<IDMChannel | null>;
 }
 //# sourceMappingURL=Requester.d.ts.map

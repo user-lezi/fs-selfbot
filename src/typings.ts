@@ -540,3 +540,25 @@ export interface IUserMessageResponse {
    */
   mention_roles: string[];
 }
+
+/**
+ * Represents a DM Channel with a user.
+ */
+export interface IDMChannel {
+  /**
+   * DM Channel ID.
+   */
+  id: string;
+  /**
+   * Last message ID.
+   */
+  last_message_id: string;
+  /**
+   *  The timestamp when the last pin was made (ISO 8601 format).
+   */
+  last_pin_timestamp: string;
+  /**
+   * List of recipients.
+   */
+  recipients: IUserInfo[];
+}

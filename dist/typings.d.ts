@@ -176,4 +176,10 @@ export interface IUserMessageResponse {
     mentions: IUserInfo[];
     mention_roles: string[];
 }
+export interface IDMChannel {
+    id: string;
+    last_message_id: string;
+    last_pin_timestamp: string;
+    recipients: IUserInfo[];
+}
 //# sourceMappingURL=typings.d.ts.map
