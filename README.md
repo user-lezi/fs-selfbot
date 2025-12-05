@@ -1,3 +1,6 @@
+# **Use https://github.com/user-lezi/ForgeUser cuz better**
+---
+
 # FSSelfbot
 Effortlessly gather Discord information using user tokens. **(Disclaimer: This violates Discord's Terms of Service and is intended for educational purposes only.)**
 
